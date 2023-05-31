@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Swiffly</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* Add some basic styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    input[type="text"], select {
+      padding: 10px;
+      font-size: 16px;
+      width: 300px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+    }
+
+    /* Responsive styles */
+    @media screen and (max-width: 600px) {
+      input[type="text"], select, button {
+        width: 100%;
+      }
+
+      h1 img {
+        width: 80%;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+<center>
+  <h1><img src="https://see.fontimg.com/api/renderfont4/ajZ9/eyJyIjoiZnMiLCJoIjo2NiwidyI6MTI1MCwiZnMiOjUzLCJmZ2MiOiIjMjI0QkU2IiwiYmdjIjoiI0ZGRkZGRiIsInQiOjF9/U3dpZmZseSE/montserrat-alternates-black-italic.png"></h1>
+  <form id="searchForm" onsubmit="search(event)">
+    <input type="text" id="mainSearch" placeholder="Enter your keywords..." required>
+    <input type="text" id="excludeSearch" placeholder="Enter keywords to exclude...">
+    <select id="mainWebsite">
+      <option value="google">Google</option>
+      <option value="twitter">Twitter</option>
+      <option value="tumblr">Tumblr</option>
+      <option value="reddit">Reddit</option>
+      <option value="youtube">YouTube</option>
+      <option value="amazon">Amazon</option>
+      <option value="ebay">eBay</option>
+      <option value="quora">Quora</option>
+      <option value="pinterest">Pinterest</option>
+      <option value="wikipedia">Wikipedia</option>
+      <option value="dictionary">Dictionary</option>
+    </select>
+    <button type="submit">Submit</button>
+  </form>
+</center>
+<div id="searchResults"></div>
+<script>
+  function search(event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Get the search term, terms to exclude, and main website
+    const searchTerm = document.getElementById("mainSearch").value;
+    const excludeSearch = document.getElementById("excludeSearch").value;
+    const mainWebsite = document.getElementById("mainWebsite").value.toLowerCase();
+
+    // Generate the search URL
+    const searchUrl = generateSearchUrl(mainWebsite, searchTerm, excludeSearch);
+
+    // Display the link to the search results
+    displaySearchLink(searchUrl);
+  }
+
+  function generateSearchUrl(mainWebsite, searchTerm, excludeSearch) {
+    let searchUrl = "";
+
+    switch (mainWebsite) {
+      case "google":
+        searchUrl = "https://www.google.com/search?q=" + encodeURIComponent(searchTerm);
+        break;
+      case "twitter":
+        searchUrl = "https://twitter.com/search?q=" + encodeURIComponent(searchTerm);
+        break;
+      case "tumblr":
+        searchUrl = "https://www.tumblr.com/search/" + encodeURIComponent(searchTerm);
+        break;
+      case "reddit":
+        searchUrl = "https://www.reddit.com/search?q=" + encodeURIComponent(searchTerm);
+        break;
+      case "youtube":
+        searchUrl = "https://www.youtube.com/results?search_query=" + encodeURIComponent(searchTerm);
+        break;
+      case "amazon":
+        searchUrl = "https://www.amazon.com/s?k=" + encodeURIComponent(searchTerm);
+        break;
+      case "ebay":
+        searchUrl = "https://www.ebay.com/sch/i.html?_nkw=" + encodeURIComponent(searchTerm);
+        break;
+      case "quora":
+        searchUrl = "https://www.quora.com/search?q=" + encodeURIComponent(searchTerm);
+        break;
+      case "pinterest":
+        searchUrl = "https://www.pinterest.com/search/pins/?q=" + encodeURIComponent(searchTerm);
+        break;
+      case "wikipedia":
+        searchUrl = "https://en.wikipedia.org/wiki/Special:Search?search=" + encodeURIComponent(searchTerm);
+        break;
+      case "dictionary":
+        searchUrl = "https://www.dictionary.com/browse/" + encodeURIComponent(searchTerm);
+        break;
+      default:
+        searchUrl = "https://www.google.com/search?q=" + encodeURIComponent(searchTerm);
+    }
+
+    // Exclude terms if provided
+    if (excludeSearch) {
+      const excludeTerms = excludeSearch.split(" ");
+      excludeTerms.forEach(term => {
+        searchUrl += " -" + term;
+      });
+    }
+
+    return searchUrl;
+  }
+
+  function displaySearchLink(searchUrl) {
+    const searchResultsDiv = document.getElementById("searchResults");
+    searchResultsDiv.innerHTML = "";
+
+    const link = document.createElement("a");
+    link.href = searchUrl;
+    link.target = "_blank";
+    link.textContent = "Click here to view search results";
+
+    // Add CSS styles to center the link
+    link.style.display = "block";
+    link.style.textAlign = "center";
+
+    searchResultsDiv.appendChild(link);
+  }
+</script>
+</body>
+</html>
+
